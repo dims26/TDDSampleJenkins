@@ -28,4 +28,4 @@ tasks.named('test') {
 }
 
 jib.to.image = 'dims95/jenkins-ci-cd'
-jib.to.tags = [version, 'latest']
+jib.to.tags = ['${version}', 'latest']
