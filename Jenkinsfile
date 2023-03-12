@@ -8,8 +8,8 @@ node {
   }
 
   stage("Deploy to DockerHub with Jib") {
-    withCredentials([script.string(credentialsId: 'DOCKER_PASSWORD', variable: 'DOCKER_PASSWORD'), script.string(credentialsId: 'DOCKER_USERNAME', variable: 'DOCKER_USERNAME')]) {
-        echo "${this.script.DOCKER_PASSWORD}" | docker login -u "${this.script.DOCKER_USERNAME}" --password-stdin
+    withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'DOCKER_PASSWORD'), string(credentialsId: 'DOCKER_USERNAME', variable: 'DOCKER_USERNAME')]) {
+        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         sh "./gradlew jib"
     }
   }
