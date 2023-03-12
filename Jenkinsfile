@@ -8,9 +8,7 @@ node {
   }
 
   stage("Deploy to DockerHub with Jib") {
-    steps {
-        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-        sh "./gradlew jib"
-    }
+    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    sh "./gradlew jib"
   }
 }
