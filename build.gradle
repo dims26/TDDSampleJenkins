@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.0.4'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'jacoco'
+	id 'com.google.cloud.tools.jib' version '3.3.1'
 }
 
 group = 'com.dims'
@@ -25,3 +26,6 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jib.to.image = 'dims95/jenkins-ci-cd'
+jib.to.tags = [version, 'latest']
