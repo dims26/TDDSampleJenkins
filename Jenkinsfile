@@ -9,7 +9,9 @@ node {
 
   stage("Deploy to DockerHub with Jib") {
     withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'DOCKER_PASSWORD'), string(credentialsId: 'DOCKER_USERNAME', variable: 'DOCKER_USERNAME')]) {
+        sh '''
         echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+        '''
         sh "./gradlew jib"
     }
   }
