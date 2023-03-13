@@ -27,5 +27,9 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+test {
+	finalizedBy jacocoTestReport
+}
+
 jib.to.image = 'dims95/jenkins-ci-cd'
 jib.to.tags = [version, 'latest']
