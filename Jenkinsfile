@@ -12,7 +12,11 @@ node {
         sh '''
         echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
         '''
-        sh "./gradlew jib"
+        sh '''
+        ./gradlew jib \
+        -Djib.to.auth.username=${DOCKER_USERNAME} \
+        -Djib.to.auth.password=${DOCKER_PASSWORD}
+        '''
     }
   }
 }
