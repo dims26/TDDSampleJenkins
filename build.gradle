@@ -4,6 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'jacoco'
 	id 'com.google.cloud.tools.jib' version '3.3.1'
+	id 'com.heroku.sdk.heroku-gradle' version '3.0.0'
 }
 
 group = 'com.dims'
@@ -31,5 +32,9 @@ test {
 	finalizedBy jacocoTestReport
 }
 
+//Jib plugin config
 jib.to.image = 'dims95/jenkins-ci-cd'
 jib.to.tags = [version, 'latest']
+
+//Heroku plugin config
+heroku.appName = 'jenkins-ci-cd'

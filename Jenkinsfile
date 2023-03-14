@@ -7,13 +7,24 @@ node {
     sh "./gradlew build"
   }
 
-  stage("Deploy to DockerHub with Jib") {
-    withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'DOCKER_PASSWORD'), string(credentialsId: 'DOCKER_USERNAME', variable: 'DOCKER_USERNAME')]) {
-        sh '''
-        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-        ./gradlew jib -Djib.to.auth.username="${DOCKER_USERNAME}" -Djib.to.auth.password="${DOCKER_PASSWORD}"
-        '''
-    }
+  stage("Deploy to DockerHub with Jib and to Heroku") {
+    parallel([
+        docker: withCredentials([string(credentialsId: 'DOCKER_PASSWORD', variable: 'DOCKER_PASSWORD'), string(credentialsId: 'DOCKER_USERNAME', variable: 'DOCKER_USERNAME')]) {
+                        sh '''
+                        echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+                        ./gradlew jib -Djib.to.auth.username="${DOCKER_USERNAME}" -Djib.to.auth.password="${DOCKER_PASSWORD}"
+                        '''
+                    },
+        heroku: {
+            withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_KEY']) {
+                withEnv(['HEROKU_API_KEY=${HEROKU_KEY}']) {
+                    sh '''
+                    ./gradlew deployHeroku
+                    '''
+                }
+            }
+        }
+    ])
   }
 
   jacoco(
