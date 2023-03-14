@@ -16,9 +16,10 @@ node {
                         '''
                     },
         heroku: {
-            withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_KEY')]) {
+            withCredentials([string(credentialsId: 'HEROKU_KEY', variable: 'HEROKU_KEY')]) {
                 withEnv(['HEROKU_API_KEY=${HEROKU_KEY}']) {
                     sh '''
+                    echo $HEROKU_API_KEY
                     ./gradlew deployHeroku
                     '''
                 }
